@@ -8,6 +8,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "build": "rollup --config rollup.config.js --bundleConfigAsCjs",
+    "dev": "rollup --config rollup.config.dev.js --bundleConfigAsCjs --watch",
     "test:ts": "tsc --noEmit",
     "prepare": "pnpm build",
     "prepublishOnly": "pnpm test:ts",
@@ -20,6 +21,7 @@
     "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-typescript": "^12.3.0",
     "rollup": "^4.60.4",
+    "rollup-plugin-serve": "^2.0.3",
     "tslib": "^2.8.1",
     "typescript": "^6.0.3"
   },
