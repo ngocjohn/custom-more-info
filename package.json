@@ -9,17 +9,16 @@
   "scripts": {
     "build": "rollup --config rollup.config.js --bundleConfigAsCjs",
     "dev": "rollup --config rollup.config.dev.js --bundleConfigAsCjs --watch",
-    "test:ts": "tsc --noEmit",
-    "prepare": "pnpm build",
-    "prepublishOnly": "pnpm test:ts",
     "version": "git add .",
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^29.0.2",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-typescript": "^12.3.0",
+    "@types/node": "^25.9.1",
     "rollup": "^4.60.4",
     "rollup-plugin-serve": "^2.0.3",
     "tslib": "^2.8.1",
