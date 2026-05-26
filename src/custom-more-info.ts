@@ -74,6 +74,7 @@ class CustomMoreInfo {
   private _extendedEntityRegistryEntry: Map<string, ExtendedEntityRegistryEntry>;
   private _hass!: HomeAssistant['hass'];
   private _moreInfoDialogDetails?: HaMoreInfoDetails;
+  private _expansionPanelDetails?: HaExpansionPanel;
 
   private _insertAttributesGlobs(
     entityId: string,
@@ -142,12 +143,10 @@ class CustomMoreInfo {
     deviceClass: string,
     domain: string,
   ): boolean {
-    return (
-      this._anyGlobMatch(entityId, parameter?.by_glob) ||
+    return (this._anyGlobMatch(entityId, parameter?.by_glob) ||
       parameter?.by_device_class?.includes(deviceClass) ||
       parameter?.by_domain?.includes(domain) ||
-      parameter?.by_entity_id?.includes(entityId)
-    );
+      parameter?.by_entity_id?.includes(entityId)) as boolean;
   }
 
   private _debug(message: unknown): void {
@@ -200,7 +199,7 @@ class CustomMoreInfo {
         this._debug(this._config);
       })
       .finally(() => {
-        detail.HOME_ASSISTANT.element.then((ha: HomeAssistant): void => {
+        detail.HOME_ASSISTANT.element.then((ha: HomeAssistant) => {
           this._hass = ha.hass;
           getTranslations(ha)
             .then((translations: Record<string, string>) => {
@@ -270,8 +269,6 @@ class CustomMoreInfo {
     }
 
     const filter = this.getFilters({ stateObj } as Attributes);
-    console.debug('internal config for this dialog:', internalConfig);
-    console.debug('filters to apply:', filter);
 
     const moreInfoDialogInfo = await HA_MORE_INFO_DIALOG_INFO.element;
     const contentDiv = moreInfoDialogInfo?.shadowRoot?.querySelector('.content') as HTMLDivElement;
@@ -282,12 +279,12 @@ class CustomMoreInfo {
         'a more info dialog content has been found, adding data selectors to the content and a details element to the content div',
       );
       this.filterAttributes(content as Attributes);
-      const detailsPanel = this._createDetailsElement(entityId, dialog._entry);
-      contentDiv.appendChild(detailsPanel);
+      this._expansionPanelDetails = this._createDetailsElement(entityId, dialog._entry);
+      contentDiv.appendChild(this._expansionPanelDetails);
       moreInfoDialogInfo.setAttribute('details-processed', '');
       setTimeout(() => {
         this._handleDetailsContent(filter.filter_attributes, internalConfig.hide_state_section_details);
-      }, 500);
+      }, 100);
     }
   }
 
@@ -351,6 +348,17 @@ class CustomMoreInfo {
         // remove the section if there is no content to avoid showing an empty section
         attributeSection.parentElement?.removeChild(attributeSection);
       }
+      this._checkEmptyContent(detailsShadowRoot);
+    }
+  }
+
+  private _checkEmptyContent(root: ShadowRoot): void {
+    const content = root.querySelector('.content');
+    if (content && content.children.length === 0) {
+      this._debug(
+        'the details content is empty after applying the filters, removing the expansion panel to avoid showing an empty content',
+      );
+      this._expansionPanelDetails?.remove();
     }
   }
 

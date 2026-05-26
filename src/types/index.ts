@@ -45,11 +45,18 @@ export interface CustomMoreInfoConfig {
   unhide_logbook?: ConditionalFilter;
   hide_header_history_icon?: ConditionalFilter;
   unhide_header_history_icon?: ConditionalFilter;
-  hide_state_section_details?: ConditionalFilter;
-  unhide_state_section_details?: ConditionalFilter;
+
   auto_hide_header_history_icon?: boolean;
   maximized_size?: ConditionalFilter;
   default_size?: ConditionalFilter;
+  /**
+   * Conditions for hiding 'state section' in additional details element.
+   **/
+  hide_state_section_details?: ConditionalFilter;
+  /**
+   * Conditions for unhiding 'state section' in additional details element. Takes precedence over `hide_state_section_details`.
+   **/
+  unhide_state_section_details?: ConditionalFilter;
 }
 
 export interface InternalFilters {
@@ -102,6 +109,7 @@ export interface HaExpansionPanel extends HTMLElement {
   noCollapse?: boolean;
   header?: string;
   secondary?: string;
+  disabled?: boolean;
 }
 
 export interface HaMoreInfoDetails extends HTMLElement {
