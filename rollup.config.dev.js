@@ -29,4 +29,12 @@ export default {
     format: 'iife',
     sourcemap: true,
   },
+  onwarn(warning, warn) {
+    if (warning.code === 'PLUGIN_WARNING' && warning.plugin === 'typescript') {
+      // Ignore TypeScript plugin warnings
+      return;
+    }
+
+    warn(warning);
+  },
 };
