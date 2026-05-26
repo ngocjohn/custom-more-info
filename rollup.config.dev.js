@@ -8,7 +8,7 @@ export default {
   plugins: [
     nodeResolve(),
     json(),
-    typescript({}),
+    typescript(),
     terser({
       output: {
         comments: false,
@@ -28,6 +28,5 @@ export default {
     file: 'dist/custom-more-info.js',
     format: 'iife',
     sourcemap: true,
-    inlineDynamicImports: true,
   },
 };

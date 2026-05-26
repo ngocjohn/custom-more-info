@@ -6,12 +6,10 @@ import commonjs from '@rollup/plugin-commonjs';
 
 export default {
   plugins: [
-    nodeResolve({
-      preferBuiltins: false,
-    }),
+    nodeResolve(),
     commonjs(),
     json(),
-    typescript({}),
+    typescript(),
     terser({
       output: {
         comments: false,

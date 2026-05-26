@@ -2,14 +2,12 @@
   "compilerOptions": {
     "outDir": "./",
     "module": "esnext",
-    "target": "es2021",
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "noEmit": true,
-    "strict": true,
-    "noImplicitAny": false,
-    "skipLibCheck": true,
+    "target": "es6",
+    "moduleResolution": "node",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "declaration": false,
+    "noImplicitAny": false,
     "removeComments": true,
     "baseUrl": "./src",
     "rootDir": "src",
@@ -21,5 +19,5 @@
     }
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "lib", "dist", "build"]
+  "exclude": ["node_modules"]
 }
