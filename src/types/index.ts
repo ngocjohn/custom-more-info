@@ -57,6 +57,14 @@ export interface CustomMoreInfoConfig {
    * Conditions for unhiding 'state section' in additional details element. Takes precedence over `hide_state_section_details`.
    **/
   unhide_state_section_details?: ConditionalFilter;
+  /**
+   * Conditions for not injecting additional details element to initial info view. Defaults plugin add to all entities.
+   **/
+  hide_additional_details?: ConditionalFilter;
+  /**
+   * Conditions for unhiding 'additional details' in additional details element. Takes precedence over `hide_additional_details`.
+   **/
+  unhide_additional_details?: ConditionalFilter;
 }
 
 export interface InternalFilters {
@@ -67,9 +75,10 @@ export interface InternalFilters {
 export interface InternalConfig {
   hide_history: boolean;
   hide_logbook: boolean;
+  maximized_size: boolean;
   hide_header_history_icon: boolean;
   hide_state_section_details: boolean;
-  maximized_size: boolean;
+  hide_additional_details: boolean;
 }
 
 export interface Lovelace extends HTMLElement {

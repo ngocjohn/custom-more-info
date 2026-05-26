@@ -260,11 +260,12 @@ class CustomMoreInfo {
     const deviceClass = await this._getDialogDeviceClass(dialog);
     const domain = this._getDomain(entityId);
     const internalConfig = this.getInternalConfig(entityId, domain, deviceClass || '');
-
     const stateObj = this._hass.states?.[entityId];
 
-    if (!stateObj) {
-      this._debug(`the state object for ${entityId} has not been found, skipping the dialog opened handling`);
+    if (internalConfig.hide_additional_details || !stateObj) {
+      this._debug(
+        `skipping the additional details element injection because the config hide_additional_details is true or the state object of the ${entityId} is not available`,
+      );
       return;
     }
 
@@ -565,6 +566,7 @@ class CustomMoreInfo {
       header_history_icon: false,
       maximized_size: false,
       state_section_details: false,
+      additional_details: false,
     };
 
     if (this._anyConfigMatch(this._config?.hide_history, entityId, deviceClass, domain)) {
@@ -617,6 +619,14 @@ class CustomMoreInfo {
       internalConfig.state_section_details = false;
     }
 
+    if (this._anyConfigMatch(this._config?.hide_additional_details, entityId, deviceClass, domain)) {
+      internalConfig.additional_details = true;
+    }
+
+    if (this._anyConfigMatch(this._config?.unhide_additional_details, entityId, deviceClass, domain)) {
+      internalConfig.additional_details = false;
+    }
+
     this._conditionalConfig[entityId] = {
       hide_history: internalConfig.history,
       hide_logbook: internalConfig.logbook,
@@ -625,6 +635,7 @@ class CustomMoreInfo {
         (!!this._config?.auto_hide_header_history_icon && internalConfig.history && internalConfig.logbook),
       maximized_size: internalConfig.maximized_size,
       hide_state_section_details: internalConfig.state_section_details,
+      hide_additional_details: internalConfig.additional_details,
     };
 
     this._debug('finished the conditonal config retrieval, printing the conditional config...');
